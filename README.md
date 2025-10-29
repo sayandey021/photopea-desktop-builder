@@ -14,13 +14,13 @@ This release contains a **ready-to-use batch file** that automates the process o
 ---
 
 ## 📦 How to Use
-1. Download `build_photopea.bat` from this release.
+1. Download `build_photopea.bat` & `index.js` from this release.
 2. Place it inside your `photopea-v2` folder.
 3. Right-click → “Run as Administrator”.
 4. Enter your `.ico` path when prompted.
 5. Your app will be built at:
    `dist/Photopea-win32-x64/Photopea.exe`
-
+   
 ---
 
 ## 📥 Download
