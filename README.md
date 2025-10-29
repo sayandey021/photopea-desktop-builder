@@ -105,7 +105,7 @@ Want to make a setup file?
   "name": "photopea-v2",
   "version": "1.0.0",
   "description": "Offline version of Photopea using Electron.",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder"
