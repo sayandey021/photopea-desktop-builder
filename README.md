@@ -96,7 +96,7 @@ pause
 ---
 
 🎁 **Bonus: Local Dev Setup (Optional)**  
-Want to test Photopea as a desktop app before packaging?
+Want to make a setup file?
 
 ### 🧪 BONUS: Local Dev Setup
 
