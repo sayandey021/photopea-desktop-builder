@@ -91,6 +91,7 @@ echo ✅ Build complete! Your EXE is ready at:
 echo %cd%\dist\Photopea-win32-x64\Photopea.exe
 pause
 ```
+🎁 Bonus: Local Dev Setup (Optional)
 
 ## ⚠️ Disclaimer
 This script is **not affiliated with Photopea**.  
