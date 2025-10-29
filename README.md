@@ -1,3 +1,5 @@
+Note: The code in this repository, as well as this README, was generated iteratively with ChatGPT for my own needs. I have started making manual changes now, and PRs are welcome. Sharing because caring. -behdad
+
 # 🚀 Photopea Desktop Builder Script
 
 This release contains a **ready-to-use batch file** that automates the process of turning [Photopea v2](https://gitflic.ru/project/photopea-v2/photopea-v-2) into a portable Windows desktop app using Electron.
