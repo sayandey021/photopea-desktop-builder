@@ -97,8 +97,47 @@ pause
 🎁 **Bonus: Local Dev Setup (Optional)**  
 Want to test Photopea as a desktop app before packaging?
 
+### 🧪 BONUS: Local Dev Setup
+
+#### 1. Modify the json file first
+```json
+{
+  "name": "photopea-v2",
+  "version": "1.0.0",
+  "description": "Offline version of Photopea using Electron.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^39.0.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "com.yourname.photopea",
+    "productName": "Photopea V2",
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
+```
+
+#### 2. Then run the commands
+
 ```bat
-REM 🧪 BONUS: Local Dev Setup
 npm install --save-dev electron-builder
 npm run dist
 ```
