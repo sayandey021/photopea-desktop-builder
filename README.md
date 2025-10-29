@@ -141,7 +141,7 @@ Want to test Photopea as a desktop app before packaging?
 npm install --save-dev electron-builder
 npm run dist
 ```
-This launches Photopea in an Electron window for quick testing.
+This creates a setup.exe for Photopea using Electron-Builder then you can install and use it like a normal desktop app.
 
 ---
 
