@@ -29,37 +29,47 @@ Click the `.bat` file below to download and start building your own offline Phot
 
 ## 🔍 Script Breakdown: `build_photopea.bat`
 
+### 1. Environment Check
 ```bat
-REM ✅ 1. Environment Check
 where node >nul 2>nul
 if %errorlevel% neq 0 (
     echo ❌ Node.js not found. Please install Node.js first.
     pause
     exit /b
 )
+```
 
-:: 📦 2. Project Initialization
+### 2. Project Initialization
+```bat
 if not exist package.json (
     echo Initializing npm project...
     npm init -y >nul
 )
+```
 
-:: ⚙️ 3. Electron Setup
+### 3. Electron Setup
+```bat
 echo Installing Electron...
 call npm install electron --save-dev
+```
 
-:: 🧠 4. Create main.js (if missing)
+### 4. Create main.js (if missing)
+```bat
 if not exist main.js (
     echo Creating main.js...
     :: Generates Electron window with icon and loads index.html
     :: Includes contextIsolation and disables menu bar
     ...
 )
+```
 
-:: 📝 5. Configure package.json
+### 5. Configure package.json
+```bat
 powershell -Command "(Get-Content package.json) -replace '\"scripts\": \{[^}]*\}', '\"scripts\": {\"start\": \"electron .\"}' | Set-Content package.json"
+```
 
-:: 🎨 6. Icon Selection
+### 6. Icon Selection
+```bat
 set /p ICON_PATH=💠 Enter full path to your icon (.ico):
 if not exist "%ICON_PATH%" (
     echo ❌ Icon not found at: %ICON_PATH%
@@ -67,12 +77,16 @@ if not exist "%ICON_PATH%" (
     exit /b
 )
 copy "%ICON_PATH%" "%cd%\icon.ico" >nul
+```
 
-:: 📦 7. Electron Packager & Build
+### 7. Electron Packager & Build
+```bat
 call npm install -g electron-packager
 call electron-packager . Photopea --platform=win32 --arch=x64 --out=dist --overwrite --icon=icon.ico
+```
 
-:: ✅ 8. Final Output
+### 8. Final Output
+```bat
 echo ✅ Build complete! Your EXE is ready at:
 echo %cd%\dist\Photopea-win32-x64\Photopea.exe
 pause
