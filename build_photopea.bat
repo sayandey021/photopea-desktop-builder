@@ -1,93 +1,157 @@
 @echo off
-title Photopea Desktop Builder
-color 0A
+title  Photopea Desktop Builder
+
+REM ==================================================
+REM  Fix working directory (so it builds in the script's folder)
+REM ==================================================
+cd /d "%~dp0"
 
 echo ==========================================
-echo      🚀 Photopea Desktop App Builder
+echo       Photopea Desktop App Builder
 echo ==========================================
 echo.
 
-REM STEP 1: Check Node.js installation
+REM ==================================================
+REM  STEP 1: Check Node.js
+REM ==================================================
 where node >nul 2>nul
 if %errorlevel% neq 0 (
-    echo ❌ Node.js not found. Please install Node.js first.
+    echo  Node.js not found. Please install Node.js from https://nodejs.org/
     pause
     exit /b
 )
 
-REM STEP 2: Initialize project (if needed)
+REM ==================================================
+REM  STEP 2: Initialize npm project if missing
+REM ==================================================
 if not exist package.json (
     echo Initializing npm project...
-    npm init -y >nul
+    call npm init -y
+    if %errorlevel% neq 0 (
+        echo  Failed to initialize npm project.
+        pause
+        exit /b
+    )
 )
 
-REM STEP 3: Install Electron
+REM ==================================================
+REM  STEP 3: Install Electron locally
+REM ==================================================
 echo Installing Electron...
 call npm install electron --save-dev
-
-REM STEP 4: Create main.js if missing
-if not exist main.js (
-    echo Creating main.js...
-    (
-    echo const { app, BrowserWindow } = require('electron');
-    echo const path = require('path');
-    echo.
-    echo function createWindow() {
-    echo ^tconst win = new BrowserWindow({
-    echo ^t^twidth: 1280,
-    echo ^t^theight: 800,
-    echo ^t^ticon: path.join(__dirname, 'icon.ico'),
-    echo ^t^twebPreferences: {
-    echo ^t^t^tcontextIsolation: true,
-    echo ^t^t^tnodeIntegration: false
-    echo ^t^t}
-    echo ^t});
-    echo.
-    echo ^twin.loadFile(path.join(__dirname, 'index.html'));
-    echo ^twin.setMenuBarVisibility(false);
-    echo }
-    echo.
-    echo app.whenReady().then(() => {
-    echo ^tcreateWindow();
-    echo ^tapp.on('activate', () => {
-    echo ^t^tif (BrowserWindow.getAllWindows().length === 0) createWindow();
-    echo ^t});
-    echo });
-    echo.
-    echo app.on('window-all-closed', () => {
-    echo ^tif (process.platform !== 'darwin') app.quit();
-    echo });
-    ) > main.js
+if %errorlevel% neq 0 (
+    echo  Failed to install Electron.
+    pause
+    exit /b
 )
 
-REM STEP 5: Add start script to package.json
-echo Configuring package.json...
-powershell -Command "(Get-Content package.json) -replace '\"scripts\": \{[^}]*\}', '\"scripts\": {\"start\": \"electron .\"}' | Set-Content package.json"
+REM ==================================================
+REM  STEP 4: Create index.js if missing
+REM ==================================================
+if not exist index.js (
+    echo Creating index.js...
+    (
+        echo const { app, BrowserWindow } = require('electron');
+        echo const path = require('path');
+        echo.
+        echo function createWindow() {
+        echo     const win = new BrowserWindow({
+        echo         width: 1280,
+        echo         height: 800,
+        echo         webPreferences: {
+        echo             nodeIntegration: false,
+        echo             contextIsolation: true
+        echo         }
+        echo     });
+        echo.
+        echo     win.loadFile(path.join(__dirname, 'index.html'));
+        echo     win.setMenuBarVisibility(false);
+        echo }
+        echo.
+        echo app.whenReady().then(createWindow);
+        echo.
+        echo app.on('window-all-closed', () => {
+        echo     if (process.platform !== 'darwin') app.quit();
+        echo });
+    ) > index.js
 
-REM STEP 6: Ask for icon path
+    if exist index.js (
+        echo  index.js created successfully.
+    ) else (
+        echo  Failed to create index.js
+        pause
+        exit /b
+    )
+)
+
+REM ==================================================
+REM  STEP 5: Ensure package.json has start script
+REM ==================================================
+echo Configuring package.json...
+node -e "let f=require('fs');let p=JSON.parse(f.readFileSync('package.json'));p.main='index.js';p.scripts={start:'electron .'};f.writeFileSync('package.json',JSON.stringify(p,null,2));"
+if %errorlevel% neq 0 (
+    echo  Failed to configure package.json.
+    pause
+    exit /b
+)
+
+REM ==================================================
+REM  STEP 6: Ask for icon
+REM ==================================================
 echo.
-set /p ICON_PATH=💠 Enter full path to your icon (.ico): 
+set /p ICON_PATH= Enter full path to your icon (.ico): 
 
 if not exist "%ICON_PATH%" (
-    echo ❌ Icon not found at: %ICON_PATH%
+    echo  Icon not found at: %ICON_PATH%
     pause
     exit /b
 )
 
 echo Copying icon to project folder...
-copy "%ICON_PATH%" "%cd%\icon.ico" >nul
+copy "%ICON_PATH%" "%cd%\icon.ico"
+if %errorlevel% neq 0 (
+    echo  Failed to copy icon.
+    pause
+    exit /b
+)
 
-REM STEP 7: Install packager and build
+REM ==================================================
+REM  STEP 7: Install packager and build EXE
+REM ==================================================
 echo Installing Electron Packager...
-call npm install -g electron-packager
+call npm install electron-packager --save-dev
+if %errorlevel% neq 0 (
+    echo  Failed to install electron-packager.
+    pause
+    exit /b
+)
 
 echo Building Windows EXE...
-call electron-packager . Photopea --platform=win32 --arch=x64 --out=dist --overwrite --icon=icon.ico
+npx electron-packager . Photopea ^
+--platform=win32 ^
+--arch=x64 ^
+--out="%cd%\dist" ^
+--overwrite ^
+--icon="%cd%\icon.ico" ^
+--prune=true ^
+--asar
+if %errorlevel% neq 0 (
+    echo  Build failed! Please check the logs above for errors.
+    pause
+    exit /b
+)
+
+if exist "%cd%\dist\Photopea-win32-x64\Photopea.exe" (
+    echo.
+    echo ==========================================
+    echo  Build complete!
+    echo Your EXE is ready at:
+    echo %cd%\dist\Photopea-win32-x64\Photopea.exe
+    echo ==========================================
+) else (
+    echo  Build failed! Please check the logs above for errors.
+)
 
 echo.
-echo ==========================================
-echo ✅ Build complete! Your EXE is ready at:
-echo %cd%\dist\Photopea-win32-x64\Photopea.exe
-echo ==========================================
-echo.
+echo  All steps done! Press any key to exit...
 pause
