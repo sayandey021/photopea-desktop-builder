@@ -30,7 +30,7 @@ Click the `.bat` file below to download and start building your own offline Phot
 ## 🔍 Script Breakdown: `build_photopea.bat`
 
 ```bat
-:: ✅ 1. Environment Check
+REM ✅ 1. Environment Check
 where node >nul 2>nul
 if %errorlevel% neq 0 (
     echo ❌ Node.js not found. Please install Node.js first.
