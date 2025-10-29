@@ -18,7 +18,7 @@ This release contains a **ready-to-use batch file** that automates the process o
 3. Right-click → “Run as Administrator”.
 4. Enter your `.ico` path when prompted.
 5. Your app will be built at:
-dist/Photopea-win32-x64/Photopea.exe
+   `dist/Photopea-win32-x64/Photopea.exe`
 
 ---
 
@@ -91,10 +91,36 @@ echo ✅ Build complete! Your EXE is ready at:
 echo %cd%\dist\Photopea-win32-x64\Photopea.exe
 pause
 ```
-🎁 Bonus: Local Dev Setup (Optional)
 
-## ⚠️ Disclaimer
-This script is **not affiliated with Photopea**.  
-It simply wraps the open-source Photopea v2 project in a desktop shell using Electron.
+---
 
+🎁 **Bonus: Local Dev Setup (Optional)**  
+Want to test Photopea as a desktop app before packaging?
 
+```bat
+REM 🧪 BONUS: Local Dev Setup
+npm install --save-dev electron-builder
+npm run dist
+```
+This launches Photopea in an Electron window for quick testing.
+
+---
+
+## ⚠️ **Important Disclaimer**
+
+> **This project and script are provided solely for educational and personal learning purposes.**
+>
+> **It is NOT affiliated with Photopea, nor endorsed by the Photopea team.**
+>
+> This builder simply wraps the open-source Photopea v2 project in a desktop shell using Electron, and is intended to help users understand how Electron packaging works.
+>
+> **Commercial use, redistribution, or any form of misuse is strictly prohibited.**  
+> Please respect software licenses and do not use this script or its output for any unauthorized, illegal, or unethical purposes.  
+>  
+> The author does not accept responsibility for any misuse, infringement, or violation resulting from the use of this tool.  
+>
+> **If you are unsure about the legal implications, DO NOT use this tool.**
+
+---
+
+Let me know if you want a shorter version for the “About” blurb or a tagline for your personal use.
