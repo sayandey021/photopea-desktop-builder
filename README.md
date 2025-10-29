@@ -159,7 +159,3 @@ This creates a setup.exe for Photopea using Electron-Builder then you can instal
 > The author does not accept responsibility for any misuse, infringement, or violation resulting from the use of this tool.  
 >
 > **If you are unsure about the legal implications, DO NOT use this tool.**
-
----
-
-Let me know if you want a shorter version for the “About” blurb or a tagline for your personal use.
